@@ -100,6 +100,37 @@ function simulateKeyboardInput(key) {
   }, 100);
 }
 
+let keySet = new Set()
+
+/**
+  * Update the set of pressed keys.
+  * @param {string} action specify whether to add or remove subset from pressed key list.
+  * @param {string} subset a subset of simulated key names, separated with comma
+  */
+
+function updateSimulatedKeySet(action, subset) {
+  if (action === 'add') {
+    keySet = keySet.union(new Set(subset.split(',')));
+  } else if (action === 'remove') {
+    keySet = keySet.difference(new Set(subset.split(',')));
+  }
+}
+
+let priv_keySet = keySet;
+
+setInterval(() => {
+  let keyups = priv_keySet.difference(keySet)
+  let keydowns = keySet.difference(priv_keySet)
+  keyups.forEach(x => {
+    simulateKeyboardEvent('keyup', x)
+  })
+  keydowns.forEach(x => {
+    simulateKeyboardEvent('keydown', x)
+  })
+  priv_keySet = keySet;
+  // document.getElementById('debuglog').innerHTML = JSON.stringify(new Array(...keySet))
+}, 1000/60)
+
 /**
  * Bind a node by a specific key to simulate on touch
  *
@@ -111,7 +142,7 @@ function bindKey(node, key) {
 
   node.addEventListener('touchstart', event => {
     event.preventDefault();
-    simulateKeyboardEvent('keydown', key);
+    updateSimulatedKeySet('add', key)
     keysDown.set(event.target.id, node.id);
     node.classList.add('active');
   });
@@ -122,7 +153,7 @@ function bindKey(node, key) {
     const pressedKey = keysDown.get(event.target.id);
     if (pressedKey && keys.has(pressedKey)) {
       const key = keys.get(pressedKey);
-      simulateKeyboardEvent('keyup', key);
+      updateSimulatedKeySet('remove', key)
     }
 
     keysDown.delete(event.target.id);
@@ -142,14 +173,14 @@ function bindKey(node, key) {
 
     if (origTargetId) {
       const key = keys.get(origTargetId);
-      simulateKeyboardEvent('keyup', key);
+      updateSimulatedKeySet('remove', key)
       keysDown.delete(target.id);
       document.getElementById(origTargetId).classList.remove('active');
     }
 
     if (keys.has(nextTargetId)) {
       const key = keys.get(nextTargetId);
-      simulateKeyboardEvent('keydown', key);
+      updateSimulatedKeySet('add', key)
       keysDown.set(target.id, nextTargetId);
       lastTouchedId = nextTargetId;
       document.getElementById(nextTargetId).classList.add('active');
