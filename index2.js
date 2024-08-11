@@ -25,16 +25,45 @@ function createFakeListener (name, elem) {
 createFakeListener('canvas', document.getElementById('canvas'))
 createFakeListener('window', window)
 
+
+
+
+
+//
+// BEGIN ORIGINAL JavaScript
+//
+
+
+
+
+
+
 const hasTouchscreen = window.matchMedia('(hover: none), (pointer: coarse)').matches;
 const preventNativeKeys = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft', ' ', 'F12'];
 const keys = new Map();
 const keysDown = new Map();
 const canvas = document.getElementById('canvas');
+let easyrpgPlayer;
 let lastTouchedId;
 
+// Launch the Player and configure it
+window.addEventListener('load', (event) => {
+    createEasyRpgPlayer({
+      game: undefined,
+      saveFs: undefined
+    }).then(function(Module) {
+      // Module is ready
+      easyrpgPlayer = Module;
+      easyrpgPlayer.initApi();
+      canvas.focus();
+
+      // Custom code here
+    });
+});
+
 // Make EasyRPG player embeddable
-canvas.addEventListener('mouseenter', () => window.focus());
-canvas.addEventListener('click', () => window.focus());
+canvas.addEventListener('mouseenter', () => canvas.focus());
+canvas.addEventListener('click', () => canvas.focus());
 
 // Handle clicking on the fullscreen button
 document.querySelector('#controls-fullscreen').addEventListener('click', () => {
@@ -49,15 +78,10 @@ document.querySelector('#controls-fullscreen').addEventListener('click', () => {
  *
  * @param {string} eventType Type of the keyboard event
  * @param {string} key Key to simulate
- * @param {number} keyCode Key code to simulate (deprecated)
  */
-function simulateKeyboardEvent(eventType, key, keyCode) {
+function simulateKeyboardEvent(eventType, key) {
   const event = new Event(eventType, { bubbles: true });
-  event.key = key;
   event.code = key;
-  // Deprecated, but necessary for emscripten somehow
-  event.keyCode = keyCode;
-  event.which = keyCode;
 
   canvas.dispatchEvent(event);
 }
@@ -66,12 +90,11 @@ function simulateKeyboardEvent(eventType, key, keyCode) {
  * Simulate a keyboard input from `keydown` to `keyup`
  *
  * @param {string} key Key to simulate
- * @param {number} keyCode Key code to simulate (deprecated)
  */
-function simulateKeyboardInput(key, keyCode) {
-  simulateKeyboardEvent('keydown', key, keyCode);
+function simulateKeyboardInput(key) {
+  simulateKeyboardEvent('keydown', key);
   window.setTimeout(() => {
-    simulateKeyboardEvent('keyup', key, keyCode);
+    simulateKeyboardEvent('keyup', key);
   }, 100);
 }
 
@@ -80,14 +103,13 @@ function simulateKeyboardInput(key, keyCode) {
  *
  * @param {*} node The node to bind a key to
  * @param {string} key Key to simulate
- * @param {number} keyCode Key code to simulate (deprecated)
  */
-function bindKey(node, key, keyCode) {
-  keys.set(node.id, { key, keyCode });
+function bindKey(node, key) {
+  keys.set(node.id, key);
 
   node.addEventListener('touchstart', event => {
     event.preventDefault();
-    simulateKeyboardEvent('keydown', key, keyCode);
+    simulateKeyboardEvent('keydown', key);
     keysDown.set(event.target.id, node.id);
     node.classList.add('active');
   });
@@ -97,8 +119,8 @@ function bindKey(node, key, keyCode) {
 
     const pressedKey = keysDown.get(event.target.id);
     if (pressedKey && keys.has(pressedKey)) {
-      const { key, keyCode } = keys.get(pressedKey);
-      simulateKeyboardEvent('keyup', key, keyCode);
+      const key = keys.get(pressedKey);
+      simulateKeyboardEvent('keyup', key);
     }
 
     keysDown.delete(event.target.id);
@@ -117,15 +139,15 @@ function bindKey(node, key, keyCode) {
     if (origTargetId === nextTargetId) return;
 
     if (origTargetId) {
-      const { key, keyCode } = keys.get(origTargetId);
-      simulateKeyboardEvent('keyup', key, keyCode);
+      const key = keys.get(origTargetId);
+      simulateKeyboardEvent('keyup', key);
       keysDown.delete(target.id);
       document.getElementById(origTargetId).classList.remove('active');
     }
 
     if (keys.has(nextTargetId)) {
-      const { key, keyCode } = keys.get(nextTargetId);
-      simulateKeyboardEvent('keydown', key, keyCode);
+      const key = keys.get(nextTargetId);
+      simulateKeyboardEvent('keydown', key);
       keysDown.set(target.id, nextTargetId);
       lastTouchedId = nextTargetId;
       document.getElementById(nextTargetId).classList.add('active');
@@ -202,7 +224,7 @@ function updateTouchControlsVisibility() {
 // given key on touch-based devices
 if (hasTouchscreen) {
   for (const button of document.querySelectorAll('[data-key]')) {
-    bindKey(button, button.dataset.key, button.dataset.keyCode);
+    bindKey(button, button.dataset.key);
   }
 } else {
   // Prevent scrolling when pressing specific keys
@@ -222,15 +244,36 @@ if (hasTouchscreen) {
   // });
 }
 
+updateTouchControlsVisibility();
+
+
+
+
+
+
+
+//
+// END ORIGINAL JavaScript
+//
+
+
+
+
+
+
+
+
 let debugstat = false;
 
 function disableListeners (name, t) {
+    if (listenerFuncs[name][t] === undefined) {return}
     for (let i = 0; i < listenerFuncs[name][t].length; i++) {
       listenerElems[name].removeEventListener(...listenerFuncs[name][t][i])
     }
 }
 
 function enableListeners (name, t) {
+    if (listenerFuncs[name][t] === undefined) {return}
     for (let i = 0; i < listenerFuncs[name][t].length; i++) {
       origAddEventListener.call(listenerElems[name], ...listenerFuncs[name][t][i])
     }
@@ -272,8 +315,8 @@ function setSaveFile (num, data) {
       let objectStore1 = trans1.objectStore("FILE_DATA");
       let req2 = objectStore1.put({contents: new Uint8Array(data), mode: 33206, timestamp: new Date()}, "/easyrpg/" + dbPrefix + "Save/Save" + num + ".lsd");
       req2.onsuccess = () => {
-	alert("import success")
-	res()
+	      alert("import success")
+	      res()
       }
       req2.onerror = rej
     };
@@ -335,19 +378,13 @@ setTimeout(() => {
 
 document.getElementById('debugbtninner').addEventListener("click", () =>{
   if (debugstat) {
-    enableListeners("window", "keydown")
-    enableListeners("window", "keyup")
-    enableListeners("window", "keypress")
+    // enableListeners("window", "keydown")
     debugbox.style.display = "none"
+    canvas.focus();
   } else {
-    disableListeners("window", "keydown")
-    disableListeners("window", "keyup")
-    disableListeners("window", "keypress")
+    // disableListeners("window", "keydown")
     debugbox.style.display = "flex"
   }
 
   debugstat = !debugstat
 })
-
-updateTouchControlsVisibility();
-// debugtext.innerHTML = JSON.stringify(Object.keys(window))
