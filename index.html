@@ -90,7 +90,7 @@
     }
 
     #debugbtn {
-      left: 10rem;
+      left: calc(50vw - (var(--controls-size) / 2));
     }
 
     #apad {
@@ -101,10 +101,6 @@
       width: calc(2 * var(--controls-size));
       height: calc(2 * var(--controls-size));
       fill: var(--color-gray);
-    }
-
-    #dpad svg rect {
-      opacity: 0.4;
     }
 
     #apad > *, #debugbtn > * {
@@ -194,13 +190,52 @@
     <canvas id="canvas" tabindex="-1" class="unselectable"></canvas>
 
     <div id="dpad" class="unselectable">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
-        <path id="dpad-up" data-key="ArrowUp" d="M48,5.8C48,2.5,45.4,0,42,0H29.9C26.6,0,24,2.4,24,5.8V24h24V5.8z" />
-        <path id="dpad-right" data-key="ArrowRight" d="M66.2,24H48v24h18.2c3.3,0,5.8-2.7,5.8-6V29.9C72,26.5,69.5,24,66.2,24z" />
-        <path id="dpad-down" data-key="ArrowDown" d="M24,66.3c0,3.3,2.6,5.7,5.9,5.7H42c3.3,0,6-2.4,6-5.7V48H24V66.3z" />
-        <path id="dpad-left" data-key="ArrowLeft" d="M5.7,24C2.4,24,0,26.5,0,29.9V42c0,3.3,2.3,6,5.7,6H24V24H5.7z" />
-        <rect id="dpad-center" x="24" y="24" width="24" height="24" />
+      <svg
+	 viewBox="0 0 72 72"
+	 xmlns="http://www.w3.org/2000/svg"
+	 xmlns:svg="http://www.w3.org/2000/svg">
+	<path
+	   id="dpad-up"
+	   data-key="ArrowUp"
+	   d="M 48,0 H 24 v 24 h 24 z"
+	   />
+	<path
+	   id="dpad-upright"
+	   data-key="ArrowUp,ArrowRight"
+	   d="M 72,5.8 C 72,2.5 69.4,0 66,0 H 48 v 24 h 24 z"
+	   />
+	<path
+	   id="dpad-right"
+	   data-key="ArrowRight"
+	   d="M 48,24 V 48 H 72 V 24 Z"
+	   />
+	<path
+	   id="dpad-rightdown"
+	   data-key="ArrowRight,ArrowDown"
+	   d="M 48,48 V 72 H 66.2 C 69.5,72 72,69.3 72,66 V 48 Z"
+	   />
+	<path
+	   id="dpad-down"
+	   data-key="ArrowDown"
+	   d="M 24,72 H 48 V 48 H 24 Z"
+	   />
+	<path
+	   id="dpad-downleft"
+	   data-key="ArrowDown,ArrowLeft"
+	   d="M 0,66.3 C 0,69.6 2.6,72 5.8999999,72 H 24 V 48 H 0 Z"
+	   />
+	<path
+	   id="dpad-left"
+	   data-key="ArrowLeft"
+	   d="M 0,24 V 48 H 24 V 24 Z"
+	   />
+	<path
+	   id="dpad-leftup"
+	   data-key="ArrowLeft,ArrowUp"
+	   d="M 5.7,0 C 2.4,0 0,2.5 0,5.9 V 24 H 24 V 0 Z"
+	   />
       </svg>
+
     </div>
 
     <div id="apad" class="unselectable">
