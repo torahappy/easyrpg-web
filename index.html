@@ -7,12 +7,12 @@
   <style>
     :root {
       --color-gray: hsl(0, 0%, 55%);
-      --controls-size: 10vh;
+      --controls-size: 80px;
     }
 
     @media (orientation: landscape) {
       :root {
-        --controls-size: 20vh;
+        --controls-size: 80px;
       }
     }
 
@@ -82,19 +82,22 @@
     #apad,
     #debugbtn {
       position: fixed;
-      bottom: 1rem;
+      bottom: 0rem;
     }
 
     #dpad {
-      left: 1rem;
+      left: 0rem;
     }
 
     #debugbtn {
-      left: calc(50vw - (var(--controls-size) / 2));
+      left: 0rem;
+      top: 0rem;
+      width: var(--controls-size);
+      height: var(--controls-size);
     }
 
     #apad {
-      right: 1rem;
+      right: 0rem;
     }
 
     #dpad svg {
@@ -111,9 +114,15 @@
     }
 
     
-    #apad > :last-child {
+    #apad-enter {
       position: relative;
       right: var(--controls-size);
+    }
+    
+    #apad-shift {
+      position: fixed;
+      right: 0;
+      bottom: 0;
     }
 
     #dpad path:not(.active),
@@ -252,6 +261,7 @@
     <div id="apad" class="unselectable">
       <div id="apad-escape" data-key="Escape"></div>
       <div id="apad-enter" data-key="Enter"></div>
+      <div id="apad-shift" data-key="ShiftLeft"></div>
     </div>
 
     <div id="debugbtn" class="unselectable">
