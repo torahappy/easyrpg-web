@@ -3,6 +3,8 @@ let urlParams = new URLSearchParams(location.search);
 let gameName = urlParams.has("game") ? urlParams.get("game") : "default";
 let dbPrefix = urlParams.has("game") ? urlParams.get("game") + "/" : "";
 
+/*
+
 let listenerFuncs = {}
 let listenerElems = {}
 let origAddEventListener = window.addEventListener;
@@ -25,7 +27,7 @@ function createFakeListener (name, elem) {
 createFakeListener('canvas', document.getElementById('canvas'))
 createFakeListener('window', window)
 
-
+*/
 
 
 
@@ -264,7 +266,7 @@ updateTouchControlsVisibility();
 
 
 let debugstat = false;
-
+/*
 function disableListeners (name, t) {
     if (listenerFuncs[name][t] === undefined) {return}
     for (let i = 0; i < listenerFuncs[name][t].length; i++) {
@@ -278,6 +280,7 @@ function enableListeners (name, t) {
       origAddEventListener.call(listenerElems[name], ...listenerFuncs[name][t][i])
     }
 }
+*/
 
 
 document.getElementById('debugfile').addEventListener('change', function () {
@@ -366,15 +369,17 @@ document.getElementById('debugexport').addEventListener("click", async () => {
   saveAs(content, rootDir + ".zip");
 })
 
+/*
 setTimeout(() => {
   if (hasTouchscreen) {
-    let types = ["click", "mouseenter", "mousemove", "mousedown", "mouseleave", "wheel", "touchstart", "touchend", "touchmove", "touchcancel"]
+     let types = ["click", "mouseenter", "mousemove", "mousedown", "mouseleave", "wheel", "touchstart", "touchend", "touchmove", "touchcancel"]
 
-    for (let i = 0; i < types.length; i++) {
-      disableListeners("canvas", types[i])
+     for (let i = 0; i < types.length; i++) {
+       disableListeners("canvas", types[i])
     }
   }
 }, 3000)
+*/
 
 document.getElementById('debugbtninner').addEventListener("click", () =>{
   if (debugstat) {
