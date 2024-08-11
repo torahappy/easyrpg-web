@@ -159,7 +159,7 @@ function bindKey(node, key) {
 
 /** @type {{[key: number]: Gamepad}} */
 let gamepads = {};
-const haveEvents = 'ongamepadonnected' in window;
+const haveEvents = 'ongamepadconnected' in window;
 
 function addGamepad(gamepad) {
   if (gamepad == undefined) {
