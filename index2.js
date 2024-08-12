@@ -330,12 +330,25 @@ document.getElementById('debugfile').addEventListener('change', function () {
 
 document.getElementById('debugexec').addEventListener("click", () => {
   try {
-    let r = JSON.stringify(eval(document.getElementById('debugta').value))
+    let command = document.getElementById('debugta').value;
+    let r = JSON.stringify(eval(command))
     alert(r)
-    navigator.clipboard.writeText(r)
+    fetch("/api/put_log", {
+      headers: {
+	"Content-Type": "application/json"	
+      },
+      method: "POST",
+      body: JSON.stringify({text: command + "\n\n==========\n\n" + r + "\n\n==========\n==========\n\n", reset: false})
+    })
   } catch (e) {
     alert(e)
-    navigator.clipboard.writeText(e)
+    fetch("/api/put_log", {
+      headers: {
+	"Content-Type": "application/json"	
+      },
+      method: "POST",
+      body: JSON.stringify({text: command + "\n\n==========\n\n" + e.message + "\n\n==========\n==========\n\n", reset: false})
+    })
   }
   document.getElementById('debugta').value = ""
 })
@@ -400,6 +413,10 @@ document.getElementById('debugexport').addEventListener("click", async () => {
   saveAs(content, rootDir + ".zip");
 })
 
+document.getElementById('reloadaudio').addEventListener('click', () => {
+  easyrpgPlayer.SDL2.audioContext.resume()
+})
+
 /*
 setTimeout(() => {
   if (hasTouchscreen) {
@@ -419,7 +436,7 @@ document.getElementById('debugbtninner').addEventListener("click", () =>{
     canvas.focus();
   } else {
     // disableListeners("window", "keydown")
-    debugbox.style.display = "flex"
+    debugbox.style.display = "block"
   }
 
   debugstat = !debugstat

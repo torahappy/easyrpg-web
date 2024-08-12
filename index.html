@@ -131,36 +131,37 @@
       opacity: 0.4;
     }
 
+    :root {
+      --debugbox-width: min(70vw, 300px);
+    }
+
     #debugbox {
-	position: fixed;
-	top: 10vh;
-	left: 10vw;
-	background: white;
-	z-index: 100000;
+      position: fixed;
+      top: 10vh;
+      left: calc(50vw - (var(--debugbox-width) / 2) - 1rem);
+      background: white;
+      z-index: 100000;
       display: none;
-      height: 40vh;
-      width: 80vw;
+      height: 70vh;
+      width: var(--debugbox-width);
       overflow: scroll;
       color: black;
-      padding: 0;
-      padding-top: 5px;
+      padding: 1rem;
       display: none;
-      flex-wrap: wrap;
-      justify-content: space-around;
     }
 
-    #import-wrap, #export-wrap {
-      width: 37vw;
-      overflow: hidden;
-      height: 80px;
+    #debugta {
+      width: calc(100% - 1rem);
+      height: 5rem;
+      display: block;
     }
 
-    #console-wrap {
-      width: 70vw;
+    #debugbox > div {
+      margin-bottom: 2rem;
     }
 
     #debugnumber {
-      width: 20px;
+      width: 30px;
     }
 
     #debugbox h3 {
@@ -191,6 +192,12 @@
     <div id="export-wrap">
       <h3>export saves</h3>
       <button id="debugexport">export all savedata</button>
+    </div>
+    <div id="actions-wrap">
+      <h3>misc actions</h3>
+      <button id="reloadaudio">reload audio</button>
+      <button id="button-f1">reload audio</button>
+      <button id="button-f2">reload audio</button>
     </div>
     <div id="console-wrap">
       <h3>debug console</h3>
