@@ -4,7 +4,7 @@ A custom build script for EasyRPG Player for the web, with advanced features suc
 
 ## How to build
 
-Here is a example build procedure using Docker.
+Prebuilt binaries (the `index.js` file and `easyrpg-player.wasm` file) are included in the `www` directory in this repository. For reference, here is a example build procedure using Docker.
 
 1. `cd build`
 2. `docker run --rm -it -v $PWD:/easyrpg ubuntu`
@@ -31,3 +31,9 @@ You can setup an API server for debugging log (other features such as cloud save
 2. `python -m venv venv`
 3. `venv/bin/python3 -m pip install -r requirements.txt`
 4. `bash ./start.sh`
+
+## License
+
+This program is licensed under GPLv3.
+
+See `COPYING` for more information.
