@@ -1,7 +1,11 @@
+#!/bin/bash
+
 # sudo semanage fcontext -a -t container_file_t "$PWD(/.*)?"
 # sudo restorecon -R $PWD
 # docker run --rm -it -v $PWD:/easyrpg ubuntu
-# sh build.sh
+# bash ./build.sh
+
+set -eu
 
 apt update
 apt install -y git build-essential python3 curl unzip automake pkg-config libtool cmake meson vim ripgrep
