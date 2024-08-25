@@ -32,6 +32,10 @@ You can setup an API server for debugging log (other features such as cloud save
 3. `venv/bin/python3 -m pip install -r requirements.txt`
 4. `bash ./start.sh`
 
+## Buttons
+
+Unlike the original index.html on <https://easyrpg.org/player/guide/webplayer/>, the `data-key` property now can specify multiple keys at once, like `data-key="ArrowUp,ArrowRight"` to denote up-right movement for some action-RPG games. You can easily configure buttons by editing `index.html`.
+
 ## License
 
 This program is licensed under GPLv3.
