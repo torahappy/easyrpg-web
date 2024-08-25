@@ -1,6 +1,6 @@
 # easyrpg-web
 
-A custom build script for EasyRPG Player for the web, with advanced features such as batch download save files, various utility functions, better button configuration and fixing some glitches related to iOS.
+A custom build script for EasyRPG Player for the web, with advanced features such as batch download save files, various utility functions, better button configuration and fixing some glitches related to iOS/Safari.
 
 ## How to build
 
