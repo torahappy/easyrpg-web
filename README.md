@@ -4,7 +4,7 @@ A custom build script for EasyRPG Player for the web, with advanced features suc
 
 ## How to build
 
-Prebuilt binaries (the `index.js` file and `easyrpg-player.wasm` file) are included in the `www` directory in this repository. For reference, here is a example build procedure using Docker.
+Prebuilt binaries (the `index.js` file and `easyrpg-player.wasm` file) are included in the `www` directory in this repository. For reference, here is an example build procedure using Docker.
 
 1. `cd build`
 2. `docker run --rm -it -v $PWD:/easyrpg ubuntu`
