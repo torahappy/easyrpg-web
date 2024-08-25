@@ -36,6 +36,26 @@ You can setup an API server for debugging log (other features such as cloud save
 
 Unlike the original index.html on <https://easyrpg.org/player/guide/webplayer/>, the `data-key` property now can specify multiple keys at once, like `data-key="ArrowUp,ArrowRight"` to denote up-right movement for some action-RPG games. You can easily configure buttons by editing `index.html`.
 
+By default, the keys are placed as such:
+
+```
+123
+4 5         X
+678        ZS
+
+1 ... Up-Left
+2 ... Up
+3 ... Up-Right
+4 ... Left
+5 ... Right
+6 ... Down-Left
+7 ... Down
+8 ... Down-Right
+X ... X button (Escape, Open Menu, etc.)
+Z ... Z button (Confirm, Next, etc.)
+S ... Shift button (Special Action for some game. Also you can use it in the save menu to download/upload save files! though uploading is not working in iOS due to some permisssion issue)
+```
+
 ## License
 
 This program is licensed under GPLv3.
