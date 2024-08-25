@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Thanks, Ghabry! (Reference: https://community.easyrpg.org/t/how-to-build-web-version-of-easyrpg-player/1009)
+
 # sudo semanage fcontext -a -t container_file_t "$PWD(/.*)?"
 # sudo restorecon -R $PWD
 # docker run --rm -it -v $PWD:/easyrpg ubuntu
