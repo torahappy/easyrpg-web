@@ -53,7 +53,10 @@ By default, the keys are placed as such:
 8 ... Down-Right
 X ... X button (Escape, Open Menu, etc.)
 Z ... Z button (Confirm, Next, etc.)
-S ... Shift button (Special Action for some game. Also you can use it in the save menu to download/upload save files! though uploading is not working in iOS due to some permisssion issue)
+S ... Shift button (Special Action for some game.
+      Also you can use it in the save menu to download/upload
+      save files! though uploading is not working
+      on iOS due to some permisssion issue)
 ```
 
 ## License
