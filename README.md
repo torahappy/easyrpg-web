@@ -39,10 +39,18 @@ Unlike the original index.html on <https://easyrpg.org/player/guide/webplayer/>,
 By default, the keys are placed as such:
 
 ```
-123
-4 5         X
-678        ZS
+-----------------
+- D             -
+-               -
+-               -
+-               -
+-               -
+- 123           -
+- 4 5         X -
+- 678        ZS -
+-----------------
 
+D ... Open dialog (you can batch download saves, upload saves, evaluate javascript code, resume audio if stopped etc.)
 1 ... Up-Left
 2 ... Up
 3 ... Up-Right
