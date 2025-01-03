@@ -3,43 +3,9 @@ let urlParams = new URLSearchParams(location.search);
 let gameName = urlParams.has("game") ? urlParams.get("game") : "default";
 let dbPrefix = urlParams.has("game") ? urlParams.get("game") + "/" : "";
 
-/*
-
-let listenerFuncs = {}
-let listenerElems = {}
-let origAddEventListener = window.addEventListener;
-
-function createFakeListener (name, elem) {
-  listenerFuncs[name] = {}
-  listenerElems[name] = elem
-  let newfunc = function (...args) {
-    let my_listener_funcs = listenerFuncs[name];
-    if (my_listener_funcs[args[0]] === undefined) {
-      my_listener_funcs[args[0]] = []
-    }
-    my_listener_funcs[args[0]].push(args)
-    origAddEventListener.call(elem, ...args)
-  }
-
-  elem.addEventListener = newfunc
-}
-
-createFakeListener('canvas', document.getElementById('canvas'))
-createFakeListener('window', window)
-
-*/
-
-
-
 //
 // BEGIN ORIGINAL JavaScript
 //
-
-
-
-
-
-
 const hasTouchscreen = window.matchMedia('(hover: none), (pointer: coarse)').matches;
 const preventNativeKeys = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft', ' ', 'F12'];
 const keys = new Map();
@@ -278,13 +244,6 @@ if (hasTouchscreen) {
 }
 
 updateTouchControlsVisibility();
-
-
-
-
-
-
-
 //
 // END ORIGINAL JavaScript
 //
@@ -297,22 +256,6 @@ updateTouchControlsVisibility();
 
 
 let debugstat = false;
-/*
-function disableListeners (name, t) {
-    if (listenerFuncs[name][t] === undefined) {return}
-    for (let i = 0; i < listenerFuncs[name][t].length; i++) {
-      listenerElems[name].removeEventListener(...listenerFuncs[name][t][i])
-    }
-}
-
-function enableListeners (name, t) {
-    if (listenerFuncs[name][t] === undefined) {return}
-    for (let i = 0; i < listenerFuncs[name][t].length; i++) {
-      origAddEventListener.call(listenerElems[name], ...listenerFuncs[name][t][i])
-    }
-}
-*/
-
 
 document.getElementById('debugfile').addEventListener('change', function () {
   const f = this.files[0];
@@ -416,18 +359,6 @@ document.getElementById('debugexport').addEventListener("click", async () => {
 document.getElementById('reloadaudio').addEventListener('click', () => {
   easyrpgPlayer.SDL2.audioContext.resume()
 })
-
-/*
-setTimeout(() => {
-  if (hasTouchscreen) {
-     let types = ["click", "mouseenter", "mousemove", "mousedown", "mouseleave", "wheel", "touchstart", "touchend", "touchmove", "touchcancel"]
-
-     for (let i = 0; i < types.length; i++) {
-       disableListeners("canvas", types[i])
-    }
-  }
-}, 3000)
-*/
 
 document.getElementById('debugbtninner').addEventListener("click", () =>{
   if (debugstat) {
