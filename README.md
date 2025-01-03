@@ -13,7 +13,7 @@ Prebuilt binaries (the `index.js` file and `easyrpg-player.wasm` file) are inclu
 5. `exit`
 6. `bash ./copy.sh`
 
-Finally, serve `www` using a HTTP(S) server like nginx, or follow the instructions below. You can also setup the API server and proxy it to `/api` in the HTTP(S) server.
+Finally, serve `www` using a HTTP(S) server like nginx, or follow the instructions below to setup a HTTP server with utility API activated.
 
 ## How to play a game
 
@@ -25,9 +25,9 @@ Finally, serve `www` using a HTTP(S) server like nginx, or follow the instructio
 
 ## Set up a server with API
 
-You can setup a FastAPI server, which serves EasyRPG build and utility API. The server will start on port 9000.
+You can setup a FastAPI server, which serves the main EasyRPG app, game giles, and the utility API altogether. The server will start on port 9000. Visit `http://localhost:9000/?game=<gamename>` and enjoy the game!
 
-Currently, the utility API only have a feature to record debugging logs. Currently, i'm developing the cloud save sync feature.
+Currently, the utility API only have a feature to record debugging logs. There will be more functionality (such as cloud file sync) in the future.
 
 1. `cd api`
 2. `python -m venv venv`
