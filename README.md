@@ -1,6 +1,6 @@
 # easyrpg-web
 
-A custom build script for EasyRPG Player for the web, with advanced features such as batch download save files, various utility functions, better button configuration and fixing some glitches related to iOS/Safari.
+A custom build script for EasyRPG Player for the web, with advanced features such as batch download save files, various utility functions, better button configuration and fixing some glitches related to iOS/Safari and ARPG support for touch control devices.
 
 ## How to build
 
@@ -13,7 +13,7 @@ Prebuilt binaries (the `index.js` file and `easyrpg-player.wasm` file) are inclu
 5. `exit`
 6. `bash ./copy.sh`
 
-Finally, serve `www` using a HTTP(S) server like nginx. You can also setup the API server and proxy it to `/api` in the HTTP(S) server.
+Finally, serve `www` using a HTTP(S) server like nginx, or follow the instructions below. You can also setup the API server and proxy it to `/api` in the HTTP(S) server.
 
 ## How to play a game
 
@@ -23,9 +23,11 @@ Finally, serve `www` using a HTTP(S) server like nginx. You can also setup the A
 4. Serve the `www` directory using some HTTP(S) server.
 5. Access to `www/index.html?game=<gamename>` via a modern web browser.
 
-## Set up api
+## Set up a server with API
 
-You can setup an API server for debugging log (other features such as cloud save data syncing may be added later). The server will start on port 9001. See `nginx.conf.example` for an example proxy configuration.
+You can setup a FastAPI server, which serves EasyRPG build and utility API. The server will start on port 9000.
+
+Currently, the utility API only have a feature to record debugging logs. Currently, i'm developing the cloud save sync feature.
 
 1. `cd api`
 2. `python -m venv venv`
@@ -40,7 +42,7 @@ By default, the keys are placed as such:
 
 ```
 -----------------
-- D             -
+- D           F -
 -               -
 -               -
 -               -
@@ -50,7 +52,7 @@ By default, the keys are placed as such:
 - 678        ZS -
 -----------------
 
-D ... Open dialog (you can batch download saves, upload saves, evaluate javascript code, resume audio if stopped etc.)
+D ... Open dialog (batch/indivisual download saves, upload saves, evaluate javascript code, resume audio if stopped)
 1 ... Up-Left
 2 ... Up
 3 ... Up-Right
@@ -65,6 +67,7 @@ S ... Shift button (Special Action for some games.
       Also you can use it in the save menu to download/upload
       save files! though uploading is not working
       on iOS due to some permisssion issue)
+F ... Fullscreen
 ```
 
 ## License
