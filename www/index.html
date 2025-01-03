@@ -280,14 +280,30 @@
 
 <script>
 let script = document.createElement('script');
-script.src = 'index2.js?v=' + Date.now();
+script.src = 'pre.js?v=' + Date.now();
 document.body.appendChild(script);
 
 script.onload = function () {
 
-  let script = document.createElement('script');
-  script.src = 'index.js';
-  document.body.appendChild(script);
+let script = document.createElement('script');
+script.src = 'index.js?v=' + Date.now();
+document.body.appendChild(script);
+
+script.onload = function () {
+
+let script = document.createElement('script');
+script.src = 'orig.js?v=' + Date.now();
+document.body.appendChild(script);
+
+script.onload = function () {
+
+let script = document.createElement('script');
+script.src = 'post.js?v=' + Date.now();
+document.body.appendChild(script);
+
+}
+
+}
 
 }
 

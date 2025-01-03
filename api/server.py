@@ -81,8 +81,9 @@ def get_log_html():
     if os.path.exists(os.path.join(basepath, "logs", "log.txt")):
         with open(os.path.join(basepath, "logs", "log.txt")) as f:
             result = f.read()
-        return "<style>code { font-size: 18px; }</style><code>" + result + "</code>"
+        return "<style>* { padding: 0; margin: 0; }\n html, body { width: 100% } \n pre { display: block; white-space: pre-wrap; font-size: 18px; word-break: break-all; padding: 1em; }</style><pre>" + result + "<pre>"
     else:
         raise HTTPException(404, "Log data not found")
 
-app.mount("/", StaticFiles(directory=os.path.join(basepath, '..', 'www')), name="static")
+
+app.mount("/", StaticFiles(directory=os.path.join(basepath, '..', 'www'), html=True), name="static")
