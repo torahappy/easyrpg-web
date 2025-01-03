@@ -1,7 +1,4 @@
 
-let urlParams = new URLSearchParams(location.search);
-let gameName = urlParams.has("game") ? urlParams.get("game") : "default";
-let dbPrefix = urlParams.has("game") ? urlParams.get("game") + "/" : "";
 
 //
 // BEGIN ORIGINAL JavaScript
@@ -254,6 +251,9 @@ updateTouchControlsVisibility();
 
 
 
+let urlParams = new URLSearchParams(location.search);
+let gameName = urlParams.has("game") ? urlParams.get("game") : "default";
+let dbPrefix = urlParams.has("game") ? urlParams.get("game") + "/" : "";
 
 let debugstat = false;
 
