@@ -4,18 +4,22 @@ let dbPrefix = urlParams.has("game") ? urlParams.get("game") + "/" : "";
 
 let debugstat = false;
 
-document.getElementById('debugfile').addEventListener('change', function () {
-  const f = this.files[0];
-  const reader = new FileReader();
+document.getElementById('debugfile').addEventListener('click', function () {
   const num = document.getElementById("debugnumber").value;
-  if (!num.match(/^\d\d$/)) {
+  if (!num.match(/^\d{1,2}$/)) {
     alert("invalid save slot id")
     return
   }
-  reader.onload = () => {
-    setSaveFile(num, reader.result)
-  };
-  reader.readAsArrayBuffer(f);
+  easyrpgPlayer.api.uploadSavegame(num)
+})
+
+document.getElementById('debugexportone').addEventListener('click', function () {
+  const num = document.getElementById("debugnumber_exportone").value;
+  if (!num.match(/^\d{1,2}$/)) {
+    alert("invalid save slot id")
+    return
+  }
+  easyrpgPlayer.api.downloadSavegame(num)
 })
 
 document.getElementById('debugexec').addEventListener("click", () => {
@@ -42,24 +46,6 @@ document.getElementById('debugexec').addEventListener("click", () => {
   }
   document.getElementById('debugta').value = ""
 })
-
-function setSaveFile (num, data) {
-  return new Promise((res, rej) => {
-    let req = indexedDB.open("/easyrpg/" + dbPrefix + "Save");
-    req.onsuccess = (e) => {
-      let db = e.target.result;
-      let trans1 = db.transaction("FILE_DATA", "readwrite");
-      let objectStore1 = trans1.objectStore("FILE_DATA");
-      let req2 = objectStore1.put({contents: new Uint8Array(data), mode: 33206, timestamp: new Date()}, "/easyrpg/" + dbPrefix + "Save/Save" + num + ".lsd");
-      req2.onsuccess = () => {
-	      alert("import success")
-	      res()
-      }
-      req2.onerror = rej
-    };
-    req.onerror = rej
-  })
-}
 
 function getSaveFile (filename) {
   return new Promise((res, rej) => {
@@ -109,11 +95,11 @@ document.getElementById('reloadaudio').addEventListener('click', () => {
 
 document.getElementById('debugbtninner').addEventListener("click", () =>{
   if (debugstat) {
-    // enableListeners("window", "keydown")
+    document.getElementById('debugbox-outer').style.display = "none"
     debugbox.style.display = "none"
     canvas.focus();
   } else {
-    // disableListeners("window", "keydown")
+    document.getElementById('debugbox-outer').style.display = "block"
     debugbox.style.display = "block"
   }
 

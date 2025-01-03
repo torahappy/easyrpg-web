@@ -43,7 +43,11 @@ function simulateKeyboardEvent(eventType, key) {
   const event = new Event(eventType, { bubbles: true });
   event.code = key;
 
-  canvas.dispatchEvent(event);
+  if (window.ListenerHacker.isActivated) {
+    window.ListenerHacker.dispatchEvent('canvas', event);
+  } else {
+    canvas.dispatchEvent(event);
+  }
 }
 
 /**

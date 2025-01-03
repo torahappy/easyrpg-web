@@ -94,6 +94,7 @@
       top: 0rem;
       width: var(--controls-size);
       height: var(--controls-size);
+      z-index:11;
     }
 
     #apad {
@@ -132,22 +133,26 @@
     }
 
     :root {
-      --debugbox-width: min(70vw, 300px);
+      --debugbox-width: max(calc(90vw - 2rem), 300px);
+    }
+
+    button, input, textarea {
+      font-size: 16px;
     }
 
     #debugbox {
+      font-size: 16px;
       position: fixed;
-      top: 10vh;
-      left: calc(50vw - (var(--debugbox-width) / 2) - 1rem);
+      top: var(--controls-size);
+      left: calc(50vw - (var(--debugbox-width) / 2) - 10px);
       background: white;
-      z-index: 100000;
+      z-index: 1000;
       display: none;
-      height: 70vh;
+      height: calc(100% - var(--controls-size) - 40px);
       width: var(--debugbox-width);
       overflow: scroll;
       color: black;
-      padding: 1rem;
-      display: none;
+      padding: 10px;
     }
 
     #debugta {
@@ -160,7 +165,7 @@
       margin-bottom: 2rem;
     }
 
-    #debugnumber {
+    .debugnumber {
       width: 30px;
     }
 
@@ -169,13 +174,14 @@
       margin: 0;
       margin-bottom: 5px;
     }
-    #debuglog {
+    #debugbox-outer {
       position: fixed;
-      color: black;
-      background-color: white;
-      top: 5px;
-      left: 5px;
-      z-index: 100;
+      top: var(--controls-size);
+      left: 0;
+      width:100%;
+      height:100%;
+      z-index: 99;
+      display: none;
     }
   </style>
 </head>
@@ -183,14 +189,20 @@
   <!-- <div id="debuglog">
     hello
   </div> -->
+  <div id="debugbox-outer">
   <div id="debugbox">
     <div id="import-wrap">
       <h3>import saves</h3>
-      <input id='debugnumber' type='text' placeholder='slot'/>
-      <input id='debugfile' type='file'/>
+      <input class='debugnumber' id='debugnumber' type='text' placeholder='slot'/>
+      <button id='debugfile'>Select File</button>
+    </div>
+    <div id="exportone-wrap">
+      <h3>export a save</h3>
+      <input class='debugnumber' id='debugnumber_exportone' type='text' placeholder='slot'/>
+      <button id='debugexportone'>Download</button>
     </div>
     <div id="export-wrap">
-      <h3>export saves</h3>
+      <h3>export all saves</h3>
       <button id="debugexport">export all savedata</button>
     </div>
     <div id="actions-wrap">
@@ -202,6 +214,7 @@
       <textarea id="debugta"></textarea>
       <button id="debugexec">eval</button>
     </div>
+  </div>
   </div>
   <div id="controls">
     <button id="controls-fullscreen" class="unselectable">
