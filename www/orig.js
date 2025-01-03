@@ -188,11 +188,11 @@ if (hasTouchscreen) {
   }
 } else {
   // Prevent scrolling when pressing specific keys
-  window.addEventListener('keydown', event => {
-    if (preventNativeKeys.includes(event.key)) {
-      event.preventDefault();
-    }
-  });
+  // window.addEventListener('keydown', event => {
+  //   if (preventNativeKeys.includes(event.key)) {
+  //     event.preventDefault();
+  //   }
+  // });
 
   canvas.addEventListener('contextmenu', event => {
     event.preventDefault();
