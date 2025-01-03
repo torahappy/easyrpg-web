@@ -1,1 +1,1 @@
-./venv/bin/python -m fastapi dev --port=9001 log.py
+./venv/bin/python -m fastapi dev --port=9001 server.py
