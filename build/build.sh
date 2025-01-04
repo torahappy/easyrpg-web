@@ -66,6 +66,8 @@ popd
 
 pushd /easyrpg/Player
 
+rm -rf lib
+
 mkdir lib
 
 pushd lib
