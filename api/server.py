@@ -90,7 +90,5 @@ async def function(file_path: str):
     if file_path == "":
         file_path = "index.html"
     response = FileResponse(os.path.join(basepath, '..', 'www', f"{file_path}"))
-    if file_path.endswith(".wasm"):
-        response.headers["Content-Type"] = "application/wasm"
     return response
 
