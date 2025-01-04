@@ -24,27 +24,15 @@ document.getElementById('debugexportone').addEventListener('click', function () 
 
 document.getElementById('debugexec').addEventListener("click", () => {
   let command = document.getElementById('debugta').value;
+  server_put_log(command)
   try {
     let r = JSON.stringify(eval(command))
     alert(r)
-    fetch("/api/put_log", {
-      headers: {
-	"Content-Type": "application/json"	
-      },
-      method: "POST",
-      body: JSON.stringify({text: command + "\n\n==========\n\n" + r + "\n\n==========\n==========\n\n", reset: false})
-    })
+    server_put_log(r)
   } catch (e) {
     alert(e)
-    fetch("/api/put_log", {
-      headers: {
-	"Content-Type": "application/json"	
-      },
-      method: "POST",
-      body: JSON.stringify({text: command + "\n\n==========\n\n" + e.message + "\n\n==========\n==========\n\n", reset: false})
-    })
+    server_put_log(e)
   }
-  document.getElementById('debugta').value = ""
 })
 
 function getSaveFile (filename) {

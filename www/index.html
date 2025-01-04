@@ -313,38 +313,9 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<script>
-let script = document.createElement('script');
-script.src = 'pre.js?v=' + Date.now();
-document.body.appendChild(script);
-
-script.onload = function () {
-
-let script = document.createElement('script');
-script.src = 'index.js?v=' + Date.now();
-document.body.appendChild(script);
-
-script.onload = function () {
-
-let script = document.createElement('script');
-script.src = 'orig.js?v=' + Date.now();
-document.body.appendChild(script);
-
-script.onload = function () {
-
-let script = document.createElement('script');
-script.src = 'post.js?v=' + Date.now();
-document.body.appendChild(script);
-
-}
-
-}
-
-}
-
-</script>
-
+<script src="pre.js?v=REPLACE_WITH_TIMESTAMP"></script>
+<script src="index.js?v=REPLACE_WITH_TIMESTAMP"></script>
+<script src="orig.js?v=REPLACE_WITH_TIMESTAMP"></script>
+<script src="post.js?v=REPLACE_WITH_TIMESTAMP"></script>
 </body>
 </html>
-
-

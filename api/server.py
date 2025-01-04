@@ -85,5 +85,12 @@ def get_log_html():
     else:
         raise HTTPException(404, "Log data not found")
 
+@app.get("/{file_path:path}")
+async def function(file_path: str):
+    if file_path == "":
+        file_path = "index.html"
+    response = FileResponse(os.path.join(basepath, '..', 'www', f"{file_path}"))
+    if file_path.endswith(".wasm"):
+        response.headers["Content-Type"] = "application/wasm"
+    return response
 
-app.mount("/", StaticFiles(directory=os.path.join(basepath, '..', 'www'), html=True), name="static")

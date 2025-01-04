@@ -92,3 +92,25 @@ function executeKeySet () {
   })
   priv_keySet = keySet;
 }
+
+let orig_console_log = console.log
+
+function server_put_log(...args) {
+    orig_console_log(args)
+    let s;
+    try {
+        s = JSON.stringify(args)
+    } catch (e) {
+        s = String(args)
+    }
+    fetch("/api/put_log", {
+      headers: {
+	"Content-Type": "application/json"	
+      },
+      method: "POST",
+      body: JSON.stringify({text: "=DEBUG=\n" + s + "\n", reset: false})
+    })
+}
+
+console.log = server_put_log
+console.error = server_put_log
