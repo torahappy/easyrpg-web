@@ -1,42 +1,10 @@
 #!/bin/bash
 
-# Thanks, Ghabry! (Reference: https://community.easyrpg.org/t/how-to-build-web-version-of-easyrpg-player/1009)
-
-# sudo semanage fcontext -a -t container_file_t "$PWD(/.*)?"
-# sudo restorecon -R $PWD
-# docker run --rm -it -v $PWD:/easyrpg ubuntu
-# bash ./build.sh
-
 set -eo pipefail
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+# Thanks, Ghabry! (Reference: https://community.easyrpg.org/t/how-to-build-web-version-of-easyrpg-player/1009)
 
-function patch_deps_pre () {
-    echo "Patching dependencies list..."
-    pushd "$SCRIPT_DIR/buildscripts"
-    patch -p1 < "$SCRIPT_DIR/patches/patch-savannah.patch"
-    shared/ini2sh.py
-    popd
-}
-
-function patch_deps () {
-    echo "Patching dependencies..."
-    pushd "$SCRIPT_DIR/buildscripts"
-    popd
-}
-
-function patch_lcf () {
-    echo "Patching LCF..."
-    pushd "$SCRIPT_DIR/Player/lib/liblcf"
-    patch -p1 < "$SCRIPT_DIR/patches/patch-dbbit-swap.patch"
-    popd
-}
-
-function patch_player () {
-    echo "Patching Player..."
-    pushd "$SCRIPT_DIR/Player"
-    popd
-}
+echo "installing build dependencies......"
 
 pushd /
 
@@ -52,6 +20,18 @@ pip3 install meson ninja
 
 popd
 
+echo "duplicationg EasyRPG repo......"
+
+pushd /easyrpg
+
+./clone.sh
+
+popd
+
+. ./patch.sh
+
+echo "building EasyRPG dependencies......"
+
 pushd /easyrpg/buildscripts/emscripten
 
 export PKG_CONFIG="$(which pkg-config)"
@@ -64,15 +44,11 @@ patch_deps
 
 popd
 
+echo "building EasyRPG and LCF......"
+
 pushd /easyrpg/Player
 
-rm -rf lib
-
-mkdir lib
-
 pushd lib
-
-git clone https://github.com/EasyRPG/liblcf
 
 patch_lcf
 
