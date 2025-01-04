@@ -1,0 +1,13 @@
+diff --git a/shared/packages.ini b/shared/packages.ini
+index a248746..2b4f4f7 100644
+--- a/shared/packages.ini
++++ b/shared/packages.ini
+@@ -15,7 +15,7 @@ anitya_id = 15294
+ 
+ [freetype]
+ version = 2.13.3
+-url = "https://mirrors.sarata.com/non-gnu/freetype/freetype-${version}.tar.xz"
++url = "https://download.savannah.gnu.org/releases/freetype/freetype-${version}.tar.xz"
+ arguments = "-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
+ anitya_id = 854
+ 
