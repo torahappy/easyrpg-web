@@ -27,7 +27,7 @@ Finally, serve `www` using a HTTP(S) server like nginx, or follow the instructio
 
 You can setup a FastAPI server, which serves the main EasyRPG app, game files, and the utility API altogether. The server will start on port 9000. Visit `http://localhost:9000/?game=<gamename>` and enjoy the game!
 
-Currently, the utility API only have a feature to record debugging logs. There will be more functionality (such as cloud file sync) in the future.
+Currently, the utility API only have a feature to record debugging logs (mainly for debugging the software only with the phone). There will be more functionality (such as cloud file sync) in the future.
 
 1. `cd api`
 2. `python -m venv venv`
