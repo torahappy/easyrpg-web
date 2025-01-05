@@ -90,5 +90,7 @@ async def function(file_path: str):
     if file_path == "":
         file_path = "index.html"
     response = FileResponse(os.path.join(basepath, '..', 'www', f"{file_path}"))
+    if file_path.endswith('.js') or file_path.endswith('.json'):
+        response.headers.append('Cache-Control', 'max-age=1')
     return response
 
