@@ -1,13 +1,15 @@
 #!/bin/python3
 
 from datetime import datetime
-from fastapi import FastAPI, Response, UploadFile, HTTPException
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi import FastAPI, UploadFile, HTTPException
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
+from typing import Union
 
 import re
 import os
+import json
 
 basepath = os.path.abspath(os.path.dirname(__file__))
 
@@ -57,6 +59,36 @@ async def put_backup(gameId: str, slotId: int, file: UploadFile):
         f.write(data)
     return { "result": "success", "timestamp": ts, "slotId": slotId, "filename": fn }
 
+soundfontsPath = os.path.join(basepath, "soundfonts")
+
+@app.post("/api/put_soundfont")
+async def put_soundfont(file: UploadFile):
+    if file.filename is None or not file.filename.endswith('.sf2'):
+        raise HTTPException(400, 'invalid filename (input file should be end with .sf2)')
+    with open(os.path.join(soundfontsPath, file.filename), 'wb') as f:
+        f.write(await file.read())
+    return { "result": "success" }
+
+class SetSoundFontItem(BaseModel):
+    filename: Union[str, None]
+
+@app.post("/api/set_soundfont")
+async def set_soundfont(item: SetSoundFontItem):
+    filename = item.filename
+    txtPath = os.path.join(soundfontsPath, 'default.txt')
+    if filename is None:
+        os.remove(txtPath)
+        return { "result": "success" }
+    if not os.path.exists(os.path.join(soundfontsPath, filename)):
+        raise HTTPException(400, 'soundfont file not found')
+    with open(txtPath, 'w') as f:
+        f.write(filename)
+    return { "result": "success" }
+
+@app.post("/api/list_soundfont")
+async def set_soundfont():
+    return { "result": [x for x in os.listdir(soundfontsPath) if x != 'default.txt'] }
+
 @app.post("/api/put_log")
 def put_log(data: LogItem):
     if data.reset:
@@ -89,8 +121,38 @@ def get_log_html():
 async def function(file_path: str):
     if file_path == "":
         file_path = "index.html"
-    response = FileResponse(os.path.join(basepath, '..', 'www', f"{file_path}"))
+
+    if file_path.endswith('/easyrpg.soundfont'):
+        txtPath = os.path.join(soundfontsPath, 'default.txt')
+        if not os.path.exists(txtPath):
+            raise HTTPException(404, 'not found')
+        else:
+            with open(txtPath) as f:
+                filename = f.read()
+            if os.path.exists(os.path.join(soundfontsPath, filename)):
+                return FileResponse(os.path.join(soundfontsPath, filename))
+            else:
+                raise HTTPException(404, 'not found')
+
+    path = os.path.join(basepath, '..', 'www', f"{file_path}")
+    print(path)
+
+    if not os.path.exists(path):
+        raise HTTPException(404, 'not found')
+
+    if file_path.endswith('/index.json'):
+        j = json.load(open(path))
+        txtPath = os.path.join(soundfontsPath, 'default.txt')
+        if os.path.exists(txtPath):
+            j['cache']['easyrpg.soundfont'] = 'easyrpg.soundfont'
+        else:
+            del j['cache']['easyrpg.soundfont']
+        response = JSONResponse(j)
+    else:
+        response = FileResponse(path)
+
     if file_path.endswith('.js') or file_path.endswith('.json'):
         response.headers.append('Cache-Control', 'max-age=1')
+
     return response
 
