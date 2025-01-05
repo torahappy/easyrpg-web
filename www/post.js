@@ -1,6 +1,72 @@
 let urlParams = new URLSearchParams(location.search);
-let gameName = urlParams.has("game") ? urlParams.get("game") : "default";
-let dbPrefix = urlParams.has("game") ? urlParams.get("game") + "/" : "";
+
+let SFCacheDB = {
+  init: function () {
+    const DBOpenRequest = window.indexedDB.open("SFCache", 4);
+    DBOpenRequest.onsuccess = () => {
+      this.db = DBOpenRequest.result
+    }
+    DBOpenRequest.onupgradeneeded = (event) => {
+      let db = event.target.result;
+      let objectStore = db.createObjectStore('soundfonts', {
+        keyPath: 'filename'
+      })
+      objectStore.createIndex("data", "data", { unique: false })
+      console.log('database updated')
+    };
+  },
+  db: null,
+  getNames: function () {
+    if (this.db === null) { return }
+    let db = this.db
+    return new Promise((res,rej) => {
+      let tr = db.transaction('soundfonts', 'readonly')
+      let r = tr.objectStore('soundfonts').getAllKeys()
+      r.onsuccess = (d) => {
+        res(d.target.result)
+      }
+      r.onerror = rej
+    })
+  },
+  saveSoundfont: function (name, result) {
+    if (this.db === null) { return }
+    let db = this.db
+    let tr = db.transaction('soundfonts', 'readwrite')
+    let os = tr.objectStore('soundfonts')
+    os.put({
+      filename: name,
+      data: result
+    })
+    console.log('soundfont saved')
+  },
+  restoreSoundfont: function (name) {
+    if (this.db === null) { return }
+    let db = this.db
+    return new Promise((res,rej) => {
+      let tr = db.transaction('soundfonts', 'readonly')
+      let r = tr.objectStore('soundfonts').get(name)
+      r.onsuccess = (d) => {
+        console.log(d)
+        if (!d.target.result) { rej("soundfont haven't been saved"); return; }
+        let buffer = d.target.result
+        uploadSoundfontBuffer(name, buffer.data)
+        res(buffer.data)
+      }
+      r.onerror = rej
+    })
+  }
+}
+
+SFCacheDB.init()
+
+
+
+
+
+
+
+
+
 
 let debugstat = false;
 
@@ -11,6 +77,26 @@ document.getElementById('debugfile').addEventListener('click', function () {
     return
   }
   easyrpgPlayer.api.uploadSavegame(num)
+})
+
+
+function uploadSoundfontBuffer(name, result) {
+  let Module = easyrpgPlayer;
+  const content_buf = Module._malloc(result.length);
+  Module.HEAPU8.set(result, content_buf);
+  Module.api_private.uploadSoundfontStep2('Soundfont/me.sf2', content_buf, result.length);
+  Module._free(content_buf);
+  Module.api.refreshScene();
+}
+
+document.getElementById('importsoundfont').addEventListener('click', function () {
+  let Module = easyrpgPlayer;
+  
+  Module.api_private.createInputElement_js('easyrpg_sfFile', function (file, name) {
+    const result = new Uint8Array(file.currentTarget.result);
+    uploadSoundfontBuffer(name, result)
+    SFCacheDB.saveSoundfont(name, result)
+  });
 })
 
 document.getElementById('debugexportone').addEventListener('click', function () {
@@ -36,6 +122,7 @@ document.getElementById('debugexec').addEventListener("click", () => {
 })
 
 function getSaveFile (filename) {
+  let dbPrefix = urlParams.has("game") ? urlParams.get("game") + "/" : "";
   return new Promise((res, rej) => {
     let req1 = indexedDB.open("/easyrpg/" + dbPrefix + "Save");
     req1.onsuccess = (e2) => {
@@ -53,6 +140,7 @@ function getSaveFile (filename) {
 }
 
 document.getElementById('debugexport').addEventListener("click", async () => {
+  let gameName = urlParams.has("game") ? urlParams.get("game") : "default";
   let zip = new JSZip();
   let rootDir = "backup-" + gameName + "-" + Date.now(); 
   let bak = zip.folder(rootDir);
@@ -65,10 +153,8 @@ document.getElementById('debugexport').addEventListener("click", async () => {
     }
 
     try {
-
       let sav = await getSaveFile(filename)
       bak.file(filename, sav.contents)
-
     } catch (e) {
     }
   }
