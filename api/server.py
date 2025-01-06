@@ -135,7 +135,6 @@ async def function(file_path: str):
                 raise HTTPException(404, 'not found')
 
     path = os.path.join(basepath, '..', 'www', f"{file_path}")
-    print(path)
 
     if not os.path.exists(path):
         raise HTTPException(404, 'not found')
