@@ -145,7 +145,7 @@ async def function(file_path: str):
         txtPath = os.path.join(soundfontsPath, 'default.txt')
         if os.path.exists(txtPath):
             j['cache']['easyrpg.soundfont'] = 'easyrpg.soundfont'
-        else:
+        elif 'easyrpg.soundfont' in j['cache']:
             del j['cache']['easyrpg.soundfont']
         response = JSONResponse(j)
     else:
