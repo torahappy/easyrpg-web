@@ -5,6 +5,11 @@
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, target-densitydpi=device-dpi" />
   <title>EasyRPG Player</title>
   <style>
+    p {
+        margin: 0;
+        padding: 0;
+    }
+    
     #verybigbox {
       display: none;
     }
@@ -215,17 +220,35 @@
   <div id="debugbox">
     <div id="import-wrap">
       <h3>import saves</h3>
-      <input class='debugnumber' id='debugnumber' type='text' placeholder='slot'/>
-      <button id='debugfile'>Select File</button>
-    </div>
-    <div id="exportone-wrap">
-      <h3>export a save</h3>
-      <input class='debugnumber' id='debugnumber_exportone' type='text' placeholder='slot'/>
-      <button id='debugexportone'>Download</button>
+      <p>
+        Single File: <input class='debugnumber' id='debugnumber_importone' type='text' placeholder='slot'/>
+        <button id='debugimportone'>Select File</button>
+      </p>
+      <p>
+        All saves: <button id="debugimport">import all savedata</button>
+      </p>
     </div>
     <div id="export-wrap">
-      <h3>export all saves</h3>
-      <button id="debugexport">export all savedata</button>
+      <h3>export saves</h3>
+      <p>
+        Single File: <input class='debugnumber' id='debugnumber_exportone' type='text' placeholder='slot'/>
+        <button id='debugexportone'>Download</button>
+      </p>
+      <p>
+        All saves: <button id="debugexport">export all savedata</button>
+      </p>
+    </div>
+    <div id="soundfont-wrap">
+      <h3>change soundfonts</h3>
+      <p>
+        <button id="uploadsoundfont">Upload a SoundFont file</button>
+      </p>
+      <p>
+      After that, select from the list and reload the page: <br>
+        <select id="soundfontselection">
+          <option>default</option>
+        </select>
+      </p>
     </div>
     <div id="actions-wrap">
       <h3>misc actions</h3>

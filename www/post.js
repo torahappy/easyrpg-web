@@ -4,8 +4,20 @@ let dbPrefix = urlParams.has("game") ? urlParams.get("game") + "/" : "";
 
 let debugstat = false;
 
-document.getElementById('debugfile').addEventListener('click', function () {
-  const num = document.getElementById("debugnumber").value;
+function getSaveFile (filename) {
+  return new Promise((res, rej) => {
+    easyrpgPlayer.saveFs.loadLocalEntry('/easyrpg/' + dbPrefix + 'Save/' + filename, (fs_err, fs_res) => {
+      if (fs_err !== null) {
+          rej(fs_err)
+      } else {
+          res(fs_res)
+      }
+    })
+  })
+}
+
+document.getElementById('debugimportone').addEventListener('click', function () {
+  const num = document.getElementById("debugnumber_importone").value;
   if (!num.match(/^\d{1,2}$/)) {
     alert("invalid save slot id")
     return
@@ -34,18 +46,6 @@ document.getElementById('debugexec').addEventListener("click", () => {
     server_put_log(e)
   }
 })
-
-function getSaveFile (filename) {
-  return new Promise((res, rej) => {
-    easyrpgPlayer.saveFs.loadLocalEntry('/easyrpg/' + dbPrefix + 'Save/' + filename, (fs_err, fs_res) => {
-      if (fs_err !== null) {
-          rej(fs_err)
-      } else {
-          res(fs_res)
-      }
-    })
-  })
-}
 
 document.getElementById('debugexport').addEventListener("click", async () => {
   let zip = new JSZip();
@@ -87,3 +87,49 @@ document.getElementById('debugbtninner').addEventListener("click", () =>{
   debugstat = !debugstat
 })
 
+async function syncSoundfontList() {
+  let result = await (await fetch('/api/list_soundfont')).json()
+  let el = document.getElementById('soundfontselection')
+  el.innerHTML = ''
+  let def = document.createElement('option')
+  def.innerText = 'default'
+  el.appendChild(def)
+  for (let i = 0; i < result.result.length; i++) {
+    let sfel = document.createElement('option')
+    sfel.innerText = result.result[i]
+    el.appendChild(sfel)
+  }
+  if (result.current === null) {
+    el.selectedIndex = 0
+  } else {
+    el.selectedIndex = result.result.indexOf(result.current) + 1
+  }
+}
+
+syncSoundfontList()
+
+document.getElementById('uploadsoundfont').addEventListener("click", (ev) =>{
+  easyrpgPlayer.api_private.createInputElement_js(undefined, async (file, name) => {
+    let formdata = new FormData()
+    formdata.append('file', new Blob([file.target.result]), name)
+    await fetch('/api/put_soundfont', { method: 'POST', body: formdata })
+    syncSoundfontList()
+  })
+})
+
+document.getElementById('soundfontselection').addEventListener("change", (ev) =>{
+  let el = document.getElementById('soundfontselection')
+  let filename
+  if (el.value === 'default') {
+    filename = null
+  } else {
+    filename = el.value
+  }
+  fetch('/api/set_soundfont', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({filename})
+  })
+})

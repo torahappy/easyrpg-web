@@ -85,9 +85,15 @@ async def set_soundfont(item: SetSoundFontItem):
         f.write(filename)
     return { "result": "success" }
 
-@app.post("/api/list_soundfont")
+@app.get("/api/list_soundfont")
 async def set_soundfont():
-    return { "result": [x for x in os.listdir(soundfontsPath) if x != 'default.txt'] }
+    txtPath = os.path.join(soundfontsPath, 'default.txt')
+    if not os.path.exists(txtPath):
+        filename = None
+    else:
+        with open(txtPath) as f:
+            filename = f.read()
+    return { "result": [x for x in os.listdir(soundfontsPath) if x != 'default.txt'], "current": filename }
 
 @app.post("/api/put_log")
 def put_log(data: LogItem):
