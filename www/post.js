@@ -37,18 +37,13 @@ document.getElementById('debugexec').addEventListener("click", () => {
 
 function getSaveFile (filename) {
   return new Promise((res, rej) => {
-    let req1 = indexedDB.open("/easyrpg/" + dbPrefix + "Save");
-    req1.onsuccess = (e2) => {
-      let db = e2.target.result;
-      let trans1 = db.transaction("FILE_DATA", "readonly");
-      let objectStore1 = trans1.objectStore("FILE_DATA");
-      let req2 = objectStore1.get("/easyrpg/" + dbPrefix + "Save/" + filename);              
-      req2.onsuccess = () => {
-        res(req2.result)
-      };
-      req2.onerror = rej
-    };
-    req1.onerror = rej
+    easyrpgPlayer.saveFs.loadLocalEntry('/easyrpg/' + dbPrefix + 'Save/' + filename, (fs_err, fs_res) => {
+      if (fs_err !== null) {
+          rej(fs_err)
+      } else {
+          res(fs_res)
+      }
+    })
   })
 }
 
@@ -65,10 +60,8 @@ document.getElementById('debugexport').addEventListener("click", async () => {
     }
 
     try {
-
       let sav = await getSaveFile(filename)
-      bak.file(filename, sav.contents)
-
+      bak.file(filename, sav.contents, {date: sav.timestamp})
     } catch (e) {
     }
   }

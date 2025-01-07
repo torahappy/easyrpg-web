@@ -18,7 +18,7 @@ window.addEventListener('load', (event) => {
       canvas.focus();
 
       // Custom code here
-    }).catch(console.error);
+    });
 });
 
 // Make EasyRPG player embeddable
