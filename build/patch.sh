@@ -18,7 +18,6 @@ function patch_deps () {
 function patch_lcf () {
     echo "Patching LCF..."
     pushd "$SCRIPT_DIR/Player/lib/liblcf"
-    patch -p1 < "$SCRIPT_DIR/patches/patch-dbbit-swap.patch"
     popd
 }
 
