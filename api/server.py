@@ -86,7 +86,7 @@ async def set_soundfont(item: SetSoundFontItem):
     return { "result": "success" }
 
 @app.get("/api/list_soundfont")
-async def set_soundfont():
+async def list_soundfont():
     txtPath = os.path.join(soundfontsPath, 'default.txt')
     if not os.path.exists(txtPath):
         filename = None
