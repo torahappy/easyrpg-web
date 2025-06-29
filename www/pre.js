@@ -53,7 +53,7 @@ var ListenerHacker = {
   }
 }
 
-ListenerHacker.activate()
+// ListenerHacker.activate()
 
 
 
