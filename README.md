@@ -41,7 +41,7 @@ You can setup a FastAPI server, which serves the main EasyRPG app, game files, a
 
 ### Server features
 
-- Soundfont selection (Replaces `easyrpg.soundfont` via virtual filesystem. Currently requires reloading the page and maybe clearing browser caches also. TODO: dynamic reloading feature and better cache control)
+- Soundfont selection (Replaces `easyrpg.soundfont` via HTTP filesystem. Currently requires reloading the page and maybe clearing browser caches too. TODO: dynamic reloading feature and better cache control)
 - Evaluate javascript codes
 - Debug log
 - (TODO) serverside savedata backup and restore
