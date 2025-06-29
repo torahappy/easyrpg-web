@@ -11,4 +11,8 @@ if [ ! -d ./venv ]; then
   venv/bin/pip3 install -r ./requirements.txt
 fi
 
+if [ ! -d ./soundfonts ]; then
+  mkdir soundfonts
+fi
+
 venv/bin/python -m fastapi dev --port=9000 --host=0.0.0.0 server.py
