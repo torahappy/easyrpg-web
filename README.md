@@ -23,6 +23,13 @@ Finally, serve `www` using a HTTP(S) server like nginx, or follow the instructio
 4. Serve the `www` directory using some HTTP(S) server.
 5. Access to `www/index.html?game=<gamename>` via a modern web browser.
 
+### Web UI features
+
+- basic control (8-direction arrows, Z, X and Shift)
+- import/export save data (batch mode and single mode)
+- "reload audio" button
+- (TODO) other keys (F1, F2, F3, ...)
+
 ## Set up a server with API
 
 You can setup a FastAPI server, which serves the main EasyRPG app, game files, and the utility API altogether. The server will start on port 9000. Visit `http://localhost:9000/?game=<gamename>` and enjoy the game!
@@ -34,10 +41,11 @@ You can setup a FastAPI server, which serves the main EasyRPG app, game files, a
 
 ### Server features
 
-- Soundfont selection (Replaces `easyrpg.soundfont`)
+- Soundfont selection (Replaces `easyrpg.soundfont` via virtual filesystem. Currently requires reloading the page and maybe clearing browser caches also. TODO: dynamic reloading feature and better cache control)
 - Evaluate javascript codes
 - Debug log
 - (TODO) serverside savedata backup and restore
+- (TODO) filesystem layer management
 
 ## Buttons
 
