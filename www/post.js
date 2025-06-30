@@ -25,6 +25,29 @@ document.getElementById('debugimportone').addEventListener('click', function () 
   easyrpgPlayer.api.uploadSavegame(num)
 })
 
+document.getElementById('debugimport').addEventListener('click', function () {
+      let file = document.createElement('input');
+      file.type = 'file';
+      file.style.display = 'none';
+      file.addEventListener('change', async function (evt) {
+        const selected_file = evt.target.files[0];
+          let my_zip = JSZip();
+          let data = await my_zip.loadAsync(await selected_file.arrayBuffer());
+          for (let save of data.file(/^.+\.lsd$/)) {
+            let contents = await save.async("uint8array")
+            // let timestamp = new Date(save.date);
+            // let obj = {mode: 33206, contents, timestamp}
+            let slot = parseInt(save.name.match(/\d+/)[0])
+      let buf = easyrpgPlayer._malloc(contents.length);
+      easyrpgPlayer.HEAPU8.set(contents, buf);
+      easyrpgPlayer.api_private.uploadSavegameStep2(slot, buf, contents.length);
+      easyrpgPlayer._free(buf);
+      easyrpgPlayer.api.refreshScene();
+          }
+      });
+    file.click();
+});
+
 document.getElementById('debugexportone').addEventListener('click', function () {
   const num = document.getElementById("debugnumber_exportone").value;
   if (!num.match(/^\d{1,2}$/)) {
