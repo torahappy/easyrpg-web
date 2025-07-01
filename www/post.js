@@ -19,6 +19,20 @@ function getSaveFile(filename) {
   });
 }
 
+async function uploadSoundfontDynamic(my_blob) {
+  const result = await my_blob.bytes();
+  const content_buf = easyrpgPlayer._malloc(result.length);
+  easyrpgPlayer.HEAPU8.set(result, content_buf);
+  easyrpgPlayer.api_private.uploadSoundfontStep2(
+    "imported.sf2",
+    content_buf,
+    result.length,
+  );
+  easyrpgPlayer._free(content_buf);
+  easyrpgPlayer.api.refreshScene();
+  console.log("updated soundfont", result.length);
+}
+
 document
   .getElementById("debugimportone")
   .addEventListener("click", function () {
@@ -145,6 +159,7 @@ document.getElementById("uploadsoundfont").addEventListener("click", (ev) => {
     const selected_file = evt.target.files[0];
     let formdata = new FormData();
     formdata.append("file", selected_file);
+    uploadSoundfontDynamic(selected_file);
     await fetch("/api/put_soundfont", { method: "POST", body: formdata });
     syncSoundfontList();
   });
@@ -153,7 +168,7 @@ document.getElementById("uploadsoundfont").addEventListener("click", (ev) => {
 
 document
   .getElementById("soundfontselection")
-  .addEventListener("change", (ev) => {
+  .addEventListener("change", async (ev) => {
     let el = document.getElementById("soundfontselection");
     let filename;
     if (el.value === "default") {
@@ -161,11 +176,15 @@ document
     } else {
       filename = el.value;
     }
-    fetch("/api/set_soundfont", {
+    await fetch("/api/set_soundfont", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ filename }),
     });
+    let sfdata = await fetch("/games/" + gameName + "/easyrpg.soundfont", {
+      cache: "reload",
+    });
+    uploadSoundfontDynamic(await sfdata.blob());
   });
