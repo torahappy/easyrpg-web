@@ -187,5 +187,9 @@ document
     let sfdata = await fetch("/games/" + gameName + "/easyrpg.soundfont", {
       cache: "reload",
     });
-    uploadSoundfontDynamic(await sfdata.blob());
+    if (el.value === "default") {
+      alert("Dynamic switching does not support deactivating soundfont itself. Please reload the page.")
+    } else {
+      uploadSoundfontDynamic(await sfdata.blob());
+    }
   });
