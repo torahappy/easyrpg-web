@@ -138,15 +138,17 @@ async function syncSoundfontList() {
 syncSoundfontList();
 
 document.getElementById("uploadsoundfont").addEventListener("click", (ev) => {
-  easyrpgPlayer.api_private.createInputElement_js(
-    undefined,
-    async (file, name) => {
-      let formdata = new FormData();
-      formdata.append("file", new Blob([file.target.result]), name);
-      await fetch("/api/put_soundfont", { method: "POST", body: formdata });
-      syncSoundfontList();
-    },
-  );
+  let file = document.createElement("input");
+  file.type = "file";
+  file.style.display = "none";
+  file.addEventListener("change", async function (evt) {
+    const selected_file = evt.target.files[0];
+    let formdata = new FormData();
+    formdata.append("file", selected_file);
+    await fetch("/api/put_soundfont", { method: "POST", body: formdata });
+    syncSoundfontList();
+  });
+  file.click();
 });
 
 document
