@@ -161,7 +161,8 @@ document.getElementById("uploadsoundfont").addEventListener("click", (ev) => {
     formdata.append("file", selected_file);
     uploadSoundfontDynamic(selected_file);
     await fetch("/api/put_soundfont", { method: "POST", body: formdata });
-    syncSoundfontList();
+    await syncSoundfontList();
+    document.getElementById("soundfontselection").value = selected_file.name;
   });
   file.click();
 });
