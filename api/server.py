@@ -93,7 +93,7 @@ async def list_soundfont():
     else:
         with open(txtPath) as f:
             filename = f.read()
-    return { "result": [x for x in os.listdir(soundfontsPath) if x != 'default.txt'], "current": filename }
+    return { "result": [x for x in os.listdir(soundfontsPath) if x != 'default.txt' and not x.startswith(".")], "current": filename }
 
 @app.post("/api/put_log")
 def put_log(data: LogItem):
